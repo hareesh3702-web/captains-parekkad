@@ -2,124 +2,76 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Captains Parekkad</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:Poppins,sans-serif;
-background:url("vikings.jpg") center center/cover no-repeat fixed;
-min-height:100vh;
-overflow-x:hidden;
-display:flex;
-justify-content:center;
-align-items:flex-start;
-padding:40px 20px;
-}
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.72);
-z-index:0;
-}
-.container{position:relative;z-index:2;max-width:1200px;width:100%;text-align:center;animation:fade 1.5s}
-h1{font-family:Cinzel;font-size:64px;color:#fff;text-shadow:0 0 20px cyan;animation:glow 3s infinite}
-.subtitle{color:#ddd;font-size:24px;margin-top:10px}
-.line{width:220px;height:3px;background:linear-gradient(to right,cyan,#00ff99,#00bfff);margin:25px auto;border-radius:20px}
-.section-title{margin:45px 0 20px;color:#fff;font-size:36px;font-family:Cinzel;text-shadow:0 0 15px cyan}
-.members,.member-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:22px}
-.member,.member-card{
-width:220px;padding:20px;border-radius:18px;color:#fff;font-weight:bold;
-cursor:pointer;position:relative;overflow:hidden;
-backdrop-filter:blur(8px);
-border:2px solid rgba(255,255,255,.15);
-box-shadow:0 0 20px rgba(0,255,255,.25);
-transition:.4s;
-animation:float 4s ease-in-out infinite;
-}
-.member{background:rgba(255,255,255,.08)}
-.member:hover,.member-card:hover{
-transform:translateY(-10px) scale(1.07);
-box-shadow:0 0 35px cyan;
-}
-.member::before,.member-card::before{
-content:"";
-position:absolute;left:-120%;top:0;width:100%;height:100%;
-background:rgba(255,255,255,.18);transform:skewX(-25deg);transition:.6s}
-.member:hover::before,.member-card:hover::before{left:130%}
-.role{margin-top:12px;font-size:18px;opacity:0;transition:.4s}
-.member-card:nth-child(1){background:linear-gradient(135deg,#00c6ff,#0072ff)}
-.member-card:nth-child(2){background:linear-gradient(135deg,#ff512f,#dd2476)}
-.member-card:nth-child(3){background:linear-gradient(135deg,#43cea2,#185a9d)}
-.member-card:nth-child(4){background:linear-gradient(135deg,#f7971e,#ffd200)}
-.member-card:nth-child(5){background:linear-gradient(135deg,#6a11cb,#2575fc)}
-.member-card:nth-child(6){background:linear-gradient(135deg,#00b09b,#96c93d)}
-.member-card:nth-child(7){background:linear-gradient(135deg,#fc466b,#3f5efb)}
-.member-card:nth-child(8){background:linear-gradient(135deg,#ee0979,#ff6a00)}
-.member-card:nth-child(9){background:linear-gradient(135deg,#11998e,#38ef7d)}
-.member-card:nth-child(10){background:linear-gradient(135deg,#ff9966,#ff5e62)}
-.member-card:nth-child(11){background:linear-gradient(135deg,#36d1dc,#5b86e5)}
-.member-card::after{content:"⚔";display:block;margin-top:8px;font-size:24px;animation:pulse 2s infinite}
-.particles{position:fixed;inset:0;z-index:1}
-.particles span{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;animation:rise 14s linear infinite;opacity:.5}
-@keyframes glow{50%{text-shadow:0 0 35px cyan}}
-@keyframes fade{from{opacity:0;transform:translateY(40px)}}
-@keyframes rise{0%{transform:translateY(100vh)}100%{transform:translateY(-120vh)}}
-@keyframes float{50%{transform:translateY(-8px)}}
-@keyframes pulse{50%{transform:scale(1.25)}}
-@media(max-width:768px){h1{font-size:42px}.member,.member-card{width:90%}}
+body{font-family:Poppins,sans-serif;background:url('vikings.jpg') center/cover fixed;min-height:100vh;color:#fff;padding:40px}
+body:before{content:'';position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:-1}
+.container{max-width:1200px;margin:auto;text-align:center}
+h1{font-family:Cinzel;font-size:60px;text-shadow:0 0 20px cyan}
+.subtitle{font-size:24px;margin:10px 0 25px}
+.members,.member-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+.member,.member-card{width:220px;padding:18px;border-radius:18px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);cursor:pointer;transition:.3s}
+.member:hover,.member-card:hover{transform:translateY(-8px) scale(1.05);box-shadow:0 0 20px cyan}
+.role{margin-top:10px;font-weight:bold}
+.member-card:nth-child(odd){background:linear-gradient(135deg,#00c6ff,#0072ff)}
+.member-card:nth-child(even){background:linear-gradient(135deg,#ff512f,#dd2476)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);justify-content:center;align-items:center}
+.modal-content{background:#111;padding:25px;border-radius:20px;border:2px solid cyan;max-width:380px;width:90%;position:relative}
+.modal-content img{width:180px;height:180px;border-radius:50%;object-fit:cover;border:4px solid cyan}
+.close{position:absolute;right:15px;top:10px;font-size:32px;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="particles">
-<span style="left:5%;animation-delay:0s"></span><span style="left:15%;animation-delay:2s"></span>
-<span style="left:25%;animation-delay:4s"></span><span style="left:35%;animation-delay:6s"></span>
-<span style="left:45%;animation-delay:8s"></span><span style="left:55%;animation-delay:1s"></span>
-<span style="left:65%;animation-delay:3s"></span><span style="left:75%;animation-delay:5s"></span>
-<span style="left:85%;animation-delay:7s"></span><span style="left:95%;animation-delay:9s"></span>
-</div>
-
 <div class="container">
 <h1>⚔ Captains Parekkad ⚔</h1>
-<p class="subtitle">Established on 2019</p>
-<div class="line"></div>
+<div class="subtitle">Established on 2019</div>
 
-<h2 class="section-title">Leadership</h2>
+<h2>Leadership</h2>
 <div class="members">
-<div class="member" onclick="showRole(this,'Secretary')">Hareesh<div class="role"></div></div>
+<div class="member" onclick="showProfile('Hareesh','Secretary','hareesh.jpg',this)">Hareesh<div class="role"></div></div>
 <div class="member" onclick="showRole(this,'Property Owner')">Manesh<div class="role"></div></div>
 <div class="member" onclick="showRole(this,'President')">Shiyadh<div class="role"></div></div>
 <div class="member" onclick="showRole(this,'Treasurer')">Ajeesh<div class="role"></div></div>
 </div>
 
-<h2 class="section-title">Members</h2>
+<h2 style="margin:40px 0 20px">Members</h2>
 <div class="member-grid">
-<div class="member-card">Ajith</div>
-<div class="member-card">Rashi</div>
-<div class="member-card">Subi</div>
-<div class="member-card">Suhaib</div>
-<div class="member-card">Aji</div>
-<div class="member-card">Asif</div>
-<div class="member-card">Anoop</div>
-<div class="member-card">Anantha Krishnan</div>
-<div class="member-card">Nisam</div>
-<div class="member-card">Sudheesh</div>
-<div class="member-card">Jaseel</div>
+<div class="member-card">Ajith</div><div class="member-card">Rashi</div><div class="member-card">Subi</div>
+<div class="member-card">Suhaib</div><div class="member-card">Aji</div><div class="member-card">Asif</div>
+<div class="member-card">Anoop</div><div class="member-card">Anantha Krishnan</div>
+<div class="member-card">Nisam</div><div class="member-card">Sudheesh</div><div class="member-card">Jaseel</div>
+</div>
+</div>
+
+<div id="profileModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">&times;</span>
+<img id="profileImg" src="hareesh.jpg">
+<h2 id="profileName">Hareesh</h2>
+<h3 id="profileRole">Secretary</h3>
+<p>⚔ Captains Parekkad ⚔</p>
 </div>
 </div>
 
 <script>
-const colors=["#00FFFF","#00FF7F","#FFD700","#FF69B4","#FF4500","#ADFF2F","#1E90FF","#FF1493"];
+const colors=["#00FFFF","#FFD700","#FF69B4","#ADFF2F","#1E90FF"];
 function showRole(card,role){
-document.querySelectorAll(".role").forEach(r=>{r.style.opacity=0;r.innerHTML=""});
-const box=card.querySelector(".role");
-box.innerHTML="★ "+role+" ★";
-box.style.color=colors[Math.floor(Math.random()*colors.length)];
-box.style.opacity=1;
-card.animate([{transform:"scale(1)"},{transform:"scale(1.12)"},{transform:"scale(1)"}],{duration:500});
+document.querySelectorAll('.role').forEach(r=>{r.innerHTML='';});
+let b=card.querySelector('.role');
+b.innerHTML='★ '+role+' ★';
+b.style.color=colors[Math.floor(Math.random()*colors.length)];
 }
+function showProfile(name,role,img,card){
+showRole(card,role);
+document.getElementById('profileName').textContent=name;
+document.getElementById('profileRole').textContent=role;
+document.getElementById('profileImg').src=img;
+document.getElementById('profileModal').style.display='flex';
+}
+function closeModal(){document.getElementById('profileModal').style.display='none';}
+window.onclick=e=>{if(e.target.id==='profileModal')closeModal();}
 </script>
-</body>
-</html>
+</body></html>
