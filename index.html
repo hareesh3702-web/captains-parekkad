@@ -32,7 +32,23 @@ background:rgba(0,0,0,.72);
 z-index:-1
 }
 .container{max-width:1200px;margin:auto;text-align:center}
-h1{font-family:Cinzel,serif;font-size:clamp(2.6rem,6vw,4.1rem);text-shadow:0 0 20px rgba(0,255,255,.55)}
+h1{
+font-family:Cinzel,serif;
+font-size:clamp(2.6rem,6vw,4.1rem);
+text-shadow:0 0 20px rgba(0,255,255,.55);
+margin-bottom:6px;
+}
+.title-wrap{display:inline-flex;align-items:center;justify-content:center;gap:.35em;flex-wrap:wrap}
+.title-icon{display:inline-block;animation:iconPop .8s ease both}
+.animated-title{display:inline-flex;flex-wrap:wrap;justify-content:center}
+.animated-title .letter{
+display:inline-block;
+opacity:0;
+transform:translateY(22px) scale(.9);
+animation:letterReveal .45s ease forwards;
+animation-delay:calc(var(--i) * .09s);
+}
+.animated-title .space{width:.38em}
 .subtitle{font-size:clamp(1rem,2vw,1.4rem);margin:10px 0 26px;color:var(--gold)}
 h2{font-family:Cinzel,serif;font-size:clamp(1.4rem,3vw,2rem);margin:34px 0 18px;color:var(--ice)}
 .members,.member-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
@@ -59,7 +75,6 @@ border-color:rgba(140,236,255,.75)
 .member-card:nth-child(odd){background:linear-gradient(135deg,rgba(0,198,255,.24),rgba(0,114,255,.18))}
 .member-card:nth-child(even){background:linear-gradient(135deg,rgba(255,81,47,.24),rgba(221,36,118,.18))}
 .member{background:linear-gradient(135deg,rgba(7,52,76,.52),rgba(28,106,116,.28))}
-
 .modal{
 position:fixed;
 inset:0;
@@ -119,6 +134,15 @@ box-shadow:0 0 24px rgba(140,236,255,.3)
 .close{position:absolute;right:16px;top:10px;font-size:32px;cursor:pointer;color:var(--ice);transition:transform .2s ease,color .2s ease}
 .close:hover{transform:scale(1.15);color:#fff}
 
+@keyframes letterReveal{
+from{opacity:0;transform:translateY(22px) scale(.9)}
+to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes iconPop{
+from{opacity:0;transform:scale(.5) rotate(-20deg)}
+to{opacity:1;transform:scale(1) rotate(0)}
+}
+
 @media (max-width:600px){
 body{padding:24px 14px}
 .member,.member-card{width:min(100%,300px)}
@@ -129,7 +153,13 @@ body{padding:24px 14px}
 </head>
 <body>
 <div class="container">
-<h1>⚔ Captains Parekkad ⚔</h1>
+<h1>
+  <span class="title-wrap">
+    <span class="title-icon">⚽</span>
+    <span id="animatedTitle" class="animated-title" aria-label="Captains Parekkad"></span>
+    <span class="title-icon">⚽</span>
+  </span>
+</h1>
 <div class="subtitle">Established on 2019</div>
 
 <h2>Leadership</h2>
@@ -170,6 +200,16 @@ body{padding:24px 14px}
 <script>
 const modal=document.getElementById('profileModal');
 const profileImg=document.getElementById('profileImg');
+const titleText='Captains Parekkad';
+const titleContainer=document.getElementById('animatedTitle');
+
+titleText.split('').forEach((char,index)=>{
+  const span=document.createElement('span');
+  span.className='letter' + (char===' ' ? ' space' : '');
+  span.style.setProperty('--i', index);
+  span.innerHTML=char===' ' ? '&nbsp;' : char;
+  titleContainer.appendChild(span);
+});
 
 function openProfile(name,role,img,phone){
 document.getElementById('profileName').textContent=name;
@@ -180,9 +220,7 @@ profileImg.src=img;
 profileImg.alt=name + ' photo';
 modal.classList.remove('closing');
 modal.style.display='flex';
-requestAnimationFrame(()=>{
-modal.classList.add('show');
-});
+requestAnimationFrame(()=>{ modal.classList.add('show'); });
 modal.setAttribute('aria-hidden','false');
 }
 
