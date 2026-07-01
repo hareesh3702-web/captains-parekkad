@@ -59,8 +59,6 @@ h2{font-family:Cinzel,serif;font-size:clamp(1.4rem,3vw,2rem);margin:34px 0 18px;
 .intro-lion{width:min(78vw,720px);height:auto;display:block;margin:0 auto 18px;animation:lionRoar 1.5s ease-in-out infinite alternate;filter:drop-shadow(0 0 26px rgba(255,140,0,.55))}
 .intro-title{font-family:Cinzel,serif;font-size:clamp(2.2rem, 6vw, 4.5rem);letter-spacing:.08em;text-shadow:0 0 16px rgba(255,180,90,.55)}
 .intro-subtitle{margin-top:10px;font-size:clamp(1rem, 2vw, 1.4rem);letter-spacing:.2em;color:#ffd79a}
-.sound-btn{margin-top:18px;padding:12px 18px;border:0;border-radius:999px;background:rgba(255,160,0,.92);color:#111;font-weight:700;font-family:Poppins,sans-serif;box-shadow:0 8px 22px rgba(255,120,0,.35);display:none}
-.sound-btn.show{display:inline-block}
 @keyframes lionRoar{from{transform:scale(1);filter:brightness(1)}to{transform:scale(1.05);filter:brightness(1.15)}}
 @keyframes introPulse{from{opacity:.5}to{opacity:1}}
 @keyframes letterReveal{from{opacity:0;transform:translateY(22px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -79,7 +77,6 @@ h2{font-family:Cinzel,serif;font-size:clamp(1.4rem,3vw,2rem);margin:34px 0 18px;
     <div class="intro-title">WELCOME</div>
     <div class="intro-subtitle">TO OUR WEBSITE</div>
     <audio id="introRoar" src="intro-roar.mp3" preload="auto" playsinline webkit-playsinline muted loop></audio>
-    <button id="soundBtn" class="sound-btn" type="button">Tap to play sound</button>
   </div>
 </div>
 <div class="bottom-fire"></div>
@@ -110,7 +107,6 @@ h2{font-family:Cinzel,serif;font-size:clamp(1.4rem,3vw,2rem);margin:34px 0 18px;
 <script>
 const intro=document.getElementById('introScreen');
 const roar=document.getElementById('introRoar');
-const soundBtn=document.getElementById('soundBtn');
 const modal=document.getElementById('profileModal');
 const profileImg=document.getElementById('profileImg');
 const titleText='Captains Parekkad';
@@ -124,12 +120,10 @@ document.querySelectorAll('.member-card').forEach(card=>{card.addEventListener('
 window.onclick=function(e){if(e.target===modal)closeModal();}
 window.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))closeModal();});
 let audioReady=false;
-function playRoar(){if(!roar)return;roar.muted=false;roar.volume=1;roar.currentTime=0;const p=roar.play();if(p&&p.catch)p.catch(()=>{if(soundBtn)soundBtn.classList.add('show');});}
-function primeAudio(){if(!roar||audioReady)return;audioReady=true;roar.load();roar.muted=true;roar.play().then(()=>{roar.pause();roar.currentTime=0;roar.muted=false;}).catch(()=>{if(soundBtn)soundBtn.classList.add('show');});}
-function enableSound(){primeAudio();playRoar();if(soundBtn)soundBtn.classList.remove('show');}
-if(soundBtn)soundBtn.addEventListener('click',enableSound);
+function playRoar(){if(!roar)return;roar.muted=false;roar.volume=1;roar.currentTime=0;const p=roar.play();if(p&&p.catch)p.catch(()=>{});}
+function primeAudio(){if(!roar||audioReady)return;audioReady=true;roar.load();roar.muted=true;roar.play().then(()=>{roar.pause();roar.currentTime=0;roar.muted=false;}).catch(()=>{});}
 ['pointerdown','touchstart','click','keydown'].forEach(ev=>document.addEventListener(ev,primeAudio,{once:true}));
-window.addEventListener('load',()=>{setTimeout(()=>{intro.classList.add('open');playRoar();setTimeout(()=>{if(soundBtn&&roar.paused)soundBtn.classList.add('show');},900);},200);setTimeout(()=>intro.classList.add('hide'),3200);setTimeout(()=>intro.remove(),4200);});
+window.addEventListener('load',()=>{setTimeout(()=>{intro.classList.add('open');const tryPlay=()=>{playRoar();if(roar.paused){setTimeout(tryPlay,300);}};tryPlay();},200);setTimeout(()=>intro.classList.add('hide'),3200);setTimeout(()=>intro.remove(),4200);});
 </script>
 </body>
 </html>
